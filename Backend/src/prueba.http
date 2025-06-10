@@ -1,15 +1,15 @@
 #### Pruebas para la API de Perfiles
 #### Prueba de creación de un perfil
-POST http://localhost:3000/api/etiquetas
+POST http://localhost:3000/api/estados
 Content-Type: application/json
 
 {
-  "nombre": "Urgente2",
-  "color": "#FF0000"
+  "nombre": "Por hacer",
+  "descripcion": "Tarea aún no iniciada"
 }
 
 #### Prueba de mostrar perfiles
-GET http://localhost:3000/api/prioridades
+GET http://localhost:3000/api/estados
 
 #### Prueba de mostrar un perfil específico
 GET http://localhost:3000/api/perfiles/2
