@@ -5,22 +5,22 @@ const repository = new PrioridadRepository();
 
 export class PrioridadService {
   async crearPrioridad(data: CrearPrioridadDto) {
-    return repository.crear(data);
+    return repository.crearPrioridad(data);
   }
 
-  async obtenerTodas() {
-    return repository.obtenerTodos();
+  async obtenerPrioridades() {
+    return repository.obtenerPrioridades();
   }
 
-  async obtenerPorId(id: number) {
-    return repository.obtenerPorId(id);
+  async obtenerPrioridadPorId(id: number) {
+    return repository.obtenerPrioridadPorId(id);
   }
 
   async actualizarPrioridad(id: number, data: ActualizarPrioridadDto) {
-    return repository.actualizar(id, data);
+    return repository.actualizarPrioridad(id, data);
   }
 
   async eliminarPrioridad(id: number) {
-    return repository.eliminar(id);
+    return repository.eliminarPrioridad(id);
   }
 }

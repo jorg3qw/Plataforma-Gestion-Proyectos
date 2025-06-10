@@ -5,12 +5,12 @@ import { crearPerfilSchema, actualizarPerfilSchema } from "../dtos/perfil.dto";
 import catchErrors from "../utils/catchErrors";
 
 const router = Router();
-const controller = new PerfilController();
+const ctrl = new PerfilController();
 
-router.post("/", validarDatos(crearPerfilSchema), catchErrors(controller.crearPerfil));
-router.get("/", catchErrors(controller.obtenerPerfiles));
-router.get("/:id", catchErrors(controller.obtenerPerfilPorId));
-router.put("/:id", validarDatos(actualizarPerfilSchema), catchErrors(controller.actualizarPerfil));
-router.delete("/:id", catchErrors(controller.eliminarPerfil));
+router.post("/",validarDatos(crearPerfilSchema),catchErrors(ctrl.crearPerfil.bind(ctrl)));
+router.get("/",catchErrors(ctrl.obtenerPerfiles.bind(ctrl)));
+router.get("/:id",catchErrors(ctrl.obtenerPerfilPorId.bind(ctrl)));
+router.put("/:id",validarDatos(actualizarPerfilSchema),catchErrors(ctrl.actualizarPerfil.bind(ctrl)));
+router.delete("/:id",catchErrors(ctrl.eliminarPerfil.bind(ctrl)));
 
 export default router;

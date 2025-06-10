@@ -1,18 +1,18 @@
 #### Pruebas para la API de Perfiles
 #### Prueba de creación de un perfil
-POST http://localhost:3000/api/prioridades
+POST http://localhost:3000/api/etiquetas
 Content-Type: application/json
 
 {
-  "nombre": "Alta",
-  "descripcion": "Tiene alta prioridad"
+  "nombre": "Urgente2",
+  "color": "#FF0000"
 }
 
 #### Prueba de mostrar perfiles
 GET http://localhost:3000/api/prioridades
 
 #### Prueba de mostrar un perfil específico
-GET http://localhost:3000/api/perfiles/5
+GET http://localhost:3000/api/perfiles/2
 
 #### Prueba de actualización de un perfil
 PUT http://localhost:3000/api/prioridades/1
@@ -24,4 +24,4 @@ Content-Type: application/json
 }
 
 #### Prueba de eliminación de un perfil
-DELETE http://localhost:3000/api/prioridades/1
+DELETE http://localhost:3000/api/etiquetas/2

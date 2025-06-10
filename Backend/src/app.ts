@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import perfilRoutes from "./routes/perfil.routes";
 import prioridadRoutes from "./routes/prioridad.routes";
+import etiquetasRoutes from "./routes/etiqueta.routes";
 import { APP_ORIGIN } from "./constants/env";
 import errorHandler from "./middlewares/errorHandler";
 
@@ -21,6 +22,7 @@ app.disable("x-powered-by");
 // Routes
 app.use("/api/perfiles", perfilRoutes);
 app.use("/api/prioridades", prioridadRoutes);
+app.use("/api/etiquetas", etiquetasRoutes);
 app.use(errorHandler);
 
 export default app;
