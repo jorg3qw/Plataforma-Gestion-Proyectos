@@ -1,0 +1,26 @@
+import express from "express";
+import cors from "cors";
+import perfilRoutes from "./routes/perfil.routes";
+import prioridadRoutes from "./routes/prioridad.routes";
+import { APP_ORIGIN } from "./constants/env";
+import errorHandler from "./middlewares/errorHandler";
+
+const app = express();
+
+// Middlewares 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+    cors({
+        origin: APP_ORIGIN,
+        credentials: true,
+    })
+)
+app.disable("x-powered-by");
+
+// Routes
+app.use("/api/perfiles", perfilRoutes);
+app.use("/api/prioridades", prioridadRoutes);
+app.use(errorHandler);
+
+export default app;

@@ -1,0 +1,213 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model actividades {
+  id_actividad     Int       @id @default(autoincrement())
+  id_tarea         Int?
+  id_usuario       Int?
+  descripcion      String
+  fecha            DateTime? @default(now()) @db.Timestamp(6)
+  estado_auditoria String?   @default("1") @db.Char(1)
+  tareas           tareas?   @relation(fields: [id_tarea], references: [id_tarea], onDelete: NoAction, onUpdate: NoAction)
+  usuarios         usuarios? @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model columnas {
+  id_columna         Int       @id @default(autoincrement())
+  id_tablero         Int?
+  nombre             String    @db.VarChar(100)
+  posicion           Int
+  estado_auditoria   String?   @default("1") @db.Char(1)
+  fecha_creacion     DateTime? @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime? @db.Timestamp(6)
+  tableros           tableros? @relation(fields: [id_tablero], references: [id_tablero], onDelete: NoAction, onUpdate: NoAction)
+  tareas             tareas[]
+}
+
+model comentarios {
+  id_comentario      Int       @id @default(autoincrement())
+  id_tarea           Int?
+  id_usuario         Int?
+  texto              String
+  estado_auditoria   String?   @default("1") @db.Char(1)
+  fecha_creacion     DateTime? @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime? @db.Timestamp(6)
+  tareas             tareas?   @relation(fields: [id_tarea], references: [id_tarea], onDelete: NoAction, onUpdate: NoAction)
+  usuarios           usuarios? @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model estados {
+  id_estado                                                     Int                @id @default(autoincrement())
+  nombre                                                        String             @unique @db.VarChar(50)
+  descripcion                                                   String?
+  estado_auditoria                                              String?            @default("1") @db.Char(1)
+  fecha_creacion                                                DateTime?          @default(now()) @db.Timestamp(6)
+  fecha_modificacion                                            DateTime?          @db.Timestamp(6)
+  historial_tareas_historial_tareas_id_estado_anteriorToestados historial_tareas[] @relation("historial_tareas_id_estado_anteriorToestados")
+  historial_tareas_historial_tareas_id_estado_nuevoToestados    historial_tareas[] @relation("historial_tareas_id_estado_nuevoToestados")
+  proyectos                                                     proyectos[]
+  tareas                                                        tareas[]
+}
+
+model etiquetas {
+  id_etiqueta        Int              @id @default(autoincrement())
+  nombre             String           @unique @db.VarChar(50)
+  color              String           @db.VarChar(7)
+  estado_auditoria   String?          @default("1") @db.Char(1)
+  fecha_creacion     DateTime?        @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime?        @db.Timestamp(6)
+  tarea_etiqueta     tarea_etiqueta[]
+}
+
+model historial_tareas {
+  id_historial                                             Int       @id @default(autoincrement())
+  id_tarea                                                 Int?
+  id_usuario                                               Int?
+  id_estado_anterior                                       Int?
+  id_estado_nuevo                                          Int?
+  id_asignado_anterior                                     Int?
+  id_asignado_nuevo                                        Int?
+  fecha                                                    DateTime? @default(now()) @db.Timestamp(6)
+  estado_auditoria                                         String?   @default("1") @db.Char(1)
+  usuarios_historial_tareas_id_asignado_anteriorTousuarios usuarios? @relation("historial_tareas_id_asignado_anteriorTousuarios", fields: [id_asignado_anterior], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  usuarios_historial_tareas_id_asignado_nuevoTousuarios    usuarios? @relation("historial_tareas_id_asignado_nuevoTousuarios", fields: [id_asignado_nuevo], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  estados_historial_tareas_id_estado_anteriorToestados     estados?  @relation("historial_tareas_id_estado_anteriorToestados", fields: [id_estado_anterior], references: [id_estado], onDelete: NoAction, onUpdate: NoAction)
+  estados_historial_tareas_id_estado_nuevoToestados        estados?  @relation("historial_tareas_id_estado_nuevoToestados", fields: [id_estado_nuevo], references: [id_estado], onDelete: NoAction, onUpdate: NoAction)
+  tareas                                                   tareas?   @relation(fields: [id_tarea], references: [id_tarea], onDelete: NoAction, onUpdate: NoAction)
+  usuarios_historial_tareas_id_usuarioTousuarios           usuarios? @relation("historial_tareas_id_usuarioTousuarios", fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model miembros_proyecto {
+  id_proyecto        Int
+  id_usuario         Int
+  rol                String?   @db.VarChar(50)
+  estado_auditoria   String?   @default("1") @db.Char(1)
+  fecha_creacion     DateTime? @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime? @db.Timestamp(6)
+  proyectos          proyectos @relation(fields: [id_proyecto], references: [id_proyecto], onDelete: NoAction, onUpdate: NoAction)
+  usuarios           usuarios  @relation(fields: [id_usuario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([id_proyecto, id_usuario])
+}
+
+model perfiles {
+  id_perfil          Int        @id @default(autoincrement())
+  nombre             String     @unique @db.VarChar(50)
+  descripcion        String?
+  estado_auditoria   String?    @default("1") @db.Char(1)
+  fecha_creacion     DateTime?  @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime?  @db.Timestamp(6)
+  usuarios           usuarios[]
+}
+
+model prioridades {
+  id_prioridad       Int       @id @default(autoincrement())
+  nombre             String    @unique @db.VarChar(50)
+  descripcion        String?
+  estado_auditoria   String?   @default("1") @db.Char(1)
+  fecha_creacion     DateTime? @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime? @db.Timestamp(6)
+  tareas             tareas[]
+}
+
+model proyectos {
+  id_proyecto        Int                 @id @default(autoincrement())
+  codigo             String              @unique @db.VarChar(50)
+  id_propietario     Int?
+  nombre             String              @db.VarChar(100)
+  descripcion        String?
+  fecha_inicio       DateTime            @db.Date
+  fecha_fin          DateTime?           @db.Date
+  id_estado          Int?                @default(1)
+  estado_auditoria   String?             @default("1") @db.Char(1)
+  fecha_creacion     DateTime?           @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime?           @db.Timestamp(6)
+  miembros_proyecto  miembros_proyecto[]
+  estados            estados?            @relation(fields: [id_estado], references: [id_estado], onDelete: NoAction, onUpdate: NoAction)
+  usuarios           usuarios?           @relation(fields: [id_propietario], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  tableros           tableros[]
+}
+
+model tableros {
+  id_tablero         Int        @id @default(autoincrement())
+  id_proyecto        Int?
+  nombre             String     @db.VarChar(100)
+  descripcion        String?
+  estado_auditoria   String?    @default("1") @db.Char(1)
+  fecha_creacion     DateTime?  @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime?  @db.Timestamp(6)
+  columnas           columnas[]
+  proyectos          proyectos? @relation(fields: [id_proyecto], references: [id_proyecto], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tarea_etiqueta {
+  id_tarea    Int
+  id_etiqueta Int
+  etiquetas   etiquetas @relation(fields: [id_etiqueta], references: [id_etiqueta], onDelete: NoAction, onUpdate: NoAction)
+  tareas      tareas    @relation(fields: [id_tarea], references: [id_tarea], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([id_tarea, id_etiqueta])
+}
+
+model tareas {
+  id_tarea           Int                @id @default(autoincrement())
+  clave              String?            @unique @db.VarChar(50)
+  resumen            String             @db.VarChar(255)
+  descripcion        String
+  id_tipo_tarea      Int?
+  id_prioridad       Int?
+  id_estado          Int?
+  id_asignado        Int?
+  id_columna         Int?
+  estado_auditoria   String?            @default("1") @db.Char(1)
+  fecha_creacion     DateTime?          @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime?          @db.Timestamp(6)
+  actividades        actividades[]
+  comentarios        comentarios[]
+  historial_tareas   historial_tareas[]
+  tarea_etiqueta     tarea_etiqueta[]
+  usuarios           usuarios?          @relation(fields: [id_asignado], references: [id_usuario], onDelete: NoAction, onUpdate: NoAction)
+  columnas           columnas?          @relation(fields: [id_columna], references: [id_columna], onDelete: NoAction, onUpdate: NoAction)
+  estados            estados?           @relation(fields: [id_estado], references: [id_estado], onDelete: NoAction, onUpdate: NoAction)
+  prioridades        prioridades?       @relation(fields: [id_prioridad], references: [id_prioridad], onDelete: NoAction, onUpdate: NoAction)
+  tipos_tarea        tipos_tarea?       @relation(fields: [id_tipo_tarea], references: [id_tipo_tarea], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tipos_tarea {
+  id_tipo_tarea      Int       @id @default(autoincrement())
+  nombre             String    @unique @db.VarChar(50)
+  descripcion        String?
+  estado_auditoria   String?   @default("1") @db.Char(1)
+  fecha_creacion     DateTime? @default(now()) @db.Timestamp(6)
+  fecha_modificacion DateTime? @db.Timestamp(6)
+  tareas             tareas[]
+}
+
+model usuarios {
+  id_usuario                                                       Int                 @id @default(autoincrement())
+  nombre                                                           String              @db.VarChar(50)
+  apellido_paterno                                                 String              @db.VarChar(50)
+  apellido_materno                                                 String?             @db.VarChar(50)
+  nombre_usuario                                                   String              @unique @db.VarChar(50)
+  correo                                                           String              @unique @db.VarChar(100)
+  contrasena                                                       String              @db.VarChar(100)
+  id_perfil                                                        Int?
+  estado_auditoria                                                 String?             @default("1") @db.Char(1)
+  fecha_creacion                                                   DateTime?           @default(now()) @db.Timestamp(6)
+  fecha_modificacion                                               DateTime?           @db.Timestamp(6)
+  actividades                                                      actividades[]
+  comentarios                                                      comentarios[]
+  historial_tareas_historial_tareas_id_asignado_anteriorTousuarios historial_tareas[]  @relation("historial_tareas_id_asignado_anteriorTousuarios")
+  historial_tareas_historial_tareas_id_asignado_nuevoTousuarios    historial_tareas[]  @relation("historial_tareas_id_asignado_nuevoTousuarios")
+  historial_tareas_historial_tareas_id_usuarioTousuarios           historial_tareas[]  @relation("historial_tareas_id_usuarioTousuarios")
+  miembros_proyecto                                                miembros_proyecto[]
+  proyectos                                                        proyectos[]
+  tareas                                                           tareas[]
+  perfiles                                                         perfiles?           @relation(fields: [id_perfil], references: [id_perfil], onDelete: NoAction, onUpdate: NoAction)
+}
