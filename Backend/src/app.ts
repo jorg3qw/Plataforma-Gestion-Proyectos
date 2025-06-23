@@ -5,6 +5,8 @@ import prioridadRoutes from "./routes/prioridad.routes";
 import etiquetasRoutes from "./routes/etiqueta.routes";
 import tipoTareaRoutes from "./routes/tipo_tarea.routes";
 import estadoRoutes from "./routes/estado.routes";
+import usuarioRoutes from "./routes/usuario.routes";
+import proyectoRouter from "./routes/proyecto.routes";
 import { APP_ORIGIN } from "./constants/env";
 import errorHandler from "./middlewares/errorHandler";
 
@@ -27,6 +29,8 @@ app.use("/api/prioridades", prioridadRoutes);
 app.use("/api/etiquetas", etiquetasRoutes);
 app.use("/api/tipos-tarea", tipoTareaRoutes);
 app.use("/api/estados", estadoRoutes);
+app.use("/api/usuarios", usuarioRoutes);
+app.use("/api/proyectos", proyectoRouter);
 app.use(errorHandler);
 
 export default app;

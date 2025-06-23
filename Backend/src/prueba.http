@@ -1,26 +1,30 @@
 #### Pruebas para la API de Perfiles
 #### Prueba de creación de un perfil
-POST http://localhost:3000/api/estados
+POST http://localhost:3000/api/proyectos
 Content-Type: application/json
 
 {
-  "nombre": "Por hacer",
-  "descripcion": "Tarea aún no iniciada"
+  "codigo": "PRJ001",
+  "nombre": "Proyecto Alpha",
+  "descripcion": "Detalle del proyecto",
+  "fecha_inicio": "2025-06-01",
+  "fecha_fin": "2025-06-30",
+  "id_propietario": 1,
+  "id_estado": 1
 }
 
 #### Prueba de mostrar perfiles
-GET http://localhost:3000/api/estados
+GET http://localhost:3000/api/proyectos
 
 #### Prueba de mostrar un perfil específico
 GET http://localhost:3000/api/perfiles/2
 
 #### Prueba de actualización de un perfil
-PUT http://localhost:3000/api/prioridades/1
+PUT http://localhost:3000/api/perfiles/6
 Content-Type: application/json
 
 {
-  "nombre": "Media",
-  "descripcion": "Tiene prioridad media"
+  "nombre": "Administrador5"
 }
 
 #### Prueba de eliminación de un perfil
