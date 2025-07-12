@@ -1,20 +1,16 @@
 #### Pruebas para la API de Perfiles
 #### Prueba de creación de un perfil
-POST http://localhost:3000/api/proyectos
+POST http://localhost:3000/api/come
 Content-Type: application/json
 
 {
-  "codigo": "PRJ001",
-  "nombre": "Proyecto Alpha",
-  "descripcion": "Detalle del proyecto",
-  "fecha_inicio": "2025-06-01",
-  "fecha_fin": "2025-06-30",
-  "id_propietario": 1,
-  "id_estado": 1
+  "texto": "Buen trabajo",
+  "id_tarea": 1,
+  "id_usuario": 3
 }
 
 #### Prueba de mostrar perfiles
-GET http://localhost:3000/api/proyectos
+GET http://localhost:3000/api/actividades
 
 #### Prueba de mostrar un perfil específico
 GET http://localhost:3000/api/perfiles/2
